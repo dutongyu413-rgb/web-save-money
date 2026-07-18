@@ -1,0 +1,48 @@
+:root {
+  color-scheme: light;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --blue-700: #465d75;
+  --blue-600: #617891;
+  --blue-050: #edf2f7;
+  --orange-700: #df5900;
+  --orange-500: #f56a0a;
+  --orange-050: #fff3e9;
+  --ink-900: #151719;
+  --ink-600: #686b70;
+  --ink-500: #7a7d82;
+  --line: #e7e7e3;
+  --line-strong: #d9dad6;
+  --canvas: #f7f7f5;
+  --frame: #eeeeeb;
+  --surface: #ffffff;
+  --surface-hover: #f2f2ef;
+  --track: #f1e8e1;
+  --chart-grid: #ecece8;
+  --skeleton: #e7ebe9;
+  --sheet-handle: #d8d9d6;
+  --ink-hover: #292c2f;
+  --orange-hover: #e96104;
+  --success: #2f8248;
+  --success-050: #edf7f0;
+  --danger: #bb3d4a;
+  --danger-050: #fff0f2;
+  --danger-disabled: #d9a4aa;
+  --shadow-card: 0 10px 30px rgba(22, 24, 26, 0.055), 0 2px 8px rgba(22, 24, 26, 0.025);
+  --shadow-soft: 0 6px 20px rgba(38, 39, 36, 0.04);
+  --shadow-sheet: 0 -18px 60px rgba(20, 20, 20, 0.14);
+  --radius-hero: 28px;
+  --radius-card: 20px;
+  --radius-field: 16px;
+  --radius-control: 999px;
+
+  --text-page-title: 24px;
+  --text-screen-title: 21px;
+  --text-section-title: 17px;
+  --text-body: 14px;
+  --text-meta: 12px;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+}
