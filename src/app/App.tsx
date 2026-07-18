@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import { AnalyticsPageTracker } from "../analytics/AnalyticsPageTracker";
 import { ErrorScreen, LoadingScreen } from "../components/Feedback";
 import { useAppData } from "../application/AppDataContext";
 import { BackupExportPage } from "../pages/BackupExportPage";
@@ -19,6 +20,7 @@ export function App() {
 
   return (
     <main className="app-shell">
+      <AnalyticsPageTracker />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/income" element={<IncomeListPage />} />

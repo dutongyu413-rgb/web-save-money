@@ -1,6 +1,7 @@
 import { Check, DownloadSimple, Lock, ShieldCheck } from "@phosphor-icons/react";
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { trackEvent } from "../analytics/umami";
 import { useAppData } from "../application/AppDataContext";
 import { backupFilename, downloadBackup, encryptSnapshot } from "../application/backupService";
 import { ScreenHeader } from "../components/ScreenHeader";
@@ -16,6 +17,13 @@ export function BackupExportPage() {
   const [result, setResult] = useState<{ envelope: unknown; filename: string } | null>(null);
   const count = data!.incomes.length + data!.savings.length;
   const filename = backupFilename();
+
+  function saveBackupToLocal() {
+    if (!result) return;
+    downloadBackup(result.envelope, result.filename);
+    // 埋点含义：用户已触发加密备份文件下载；不上传文件名、记录数量、密码或备份内容。
+    trackEvent("backup_downloaded");
+  }
 
   async function submit(event: FormEvent) {
     event.preventDefault();
@@ -51,7 +59,7 @@ export function BackupExportPage() {
           <span className="sheet-symbol success"><Check weight="bold" /></span>
           <h2>备份已生成</h2>
           <p>{result?.filename}</p>
-          <button className="button primary full" type="button" onClick={() => result && downloadBackup(result.envelope, result.filename)}><DownloadSimple />保存到本地</button>
+          <button className="button primary full" type="button" onClick={saveBackupToLocal}><DownloadSimple />保存到本地</button>
           <button className="button ghost full" type="button" onClick={() => navigate("/settings", { replace: true })}>完成</button>
           <small><ShieldCheck /> 密码和文件都不会由本产品保存</small>
         </div>

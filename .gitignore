@@ -14,6 +14,9 @@ coverage/
 # User financial backup files
 *.backup
 
+# Internal implementation reference
+使用Umami追踪网页访问与用户行为指南.md
+
 # Logs
 *.log
 npm-debug.log*

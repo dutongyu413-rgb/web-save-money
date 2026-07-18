@@ -46,6 +46,34 @@ npm run build
 
 `.backup` 文件可能包含真实财务数据，已通过 `.gitignore` 排除，请勿手动提交到公开仓库。
 
+## Umami 匿名统计
+
+项目支持 Umami 页面访问和关键行为统计。生产构建已经配置 `web-save-money` 对应的 Website ID，无需额外设置即可开始统计。
+
+本地开发默认关闭统计，避免调试数据污染正式结果。如需在本地联调，可复制环境变量示例：
+
+```bash
+cp .env.example .env.local
+```
+
+```text
+VITE_UMAMI_WEBSITE_ID=ebe13ff1-7a56-4a1d-ab6d-3a4c2e8df138
+VITE_UMAMI_SCRIPT_URL=https://cloud.umami.is/script.js
+```
+
+所有自定义事件统一使用 `save_money_` 前缀：
+
+| 事件 | 含义 |
+| --- | --- |
+| `save_money_page_viewed` | 进入某个功能页面 |
+| `save_money_income_record_saved` | 收入记录成功新增或编辑 |
+| `save_money_savings_record_saved` | 储蓄记录成功新增或编辑 |
+| `save_money_target_rate_saved` | 目标储蓄率保存成功 |
+| `save_money_backup_downloaded` | 已触发加密备份下载 |
+| `save_money_backup_restored` | 备份恢复成功 |
+
+统计只包含页面名称、创建/编辑、增加/取用等非敏感分类，不上传金额、日期、备注、目标值、密码和备份内容。未配置 Umami 或统计脚本加载失败时，不影响应用正常使用。
+
 ## 技术栈
 
 - Vite、React、TypeScript

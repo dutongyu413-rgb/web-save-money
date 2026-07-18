@@ -1,6 +1,7 @@
 import { ArrowDownLeft, ChartBar, Gear, PencilSimple, Plus } from "@phosphor-icons/react";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { trackEvent } from "../analytics/umami";
 import { useAppData } from "../application/AppDataContext";
 import { MonthSwitcher } from "../components/MonthSwitcher";
 import { Sheet } from "../components/Sheet";
@@ -41,6 +42,8 @@ export function HomePage() {
     try {
       setSaving(true);
       await setTargetRate(value);
+      // 埋点含义：目标储蓄率已经保存成功；不上传用户设置的具体百分比。
+      trackEvent("target_rate_saved");
       setSheet(null);
       setError("");
     } finally {

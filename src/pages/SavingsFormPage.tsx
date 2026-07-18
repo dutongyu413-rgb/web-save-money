@@ -1,6 +1,7 @@
 import { Info, Minus, Plus, Trash } from "@phosphor-icons/react";
 import { useState, type FormEvent } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { trackEvent } from "../analytics/umami";
 import { useAppData } from "../application/AppDataContext";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { Sheet } from "../components/Sheet";
@@ -40,6 +41,11 @@ export function SavingsFormPage() {
     try {
       setSubmitting(true);
       await saveSavings({ amountCents: mode === "take" ? -rawCents : rawCents, occurredOn: date, note }, recordId);
+      // 埋点含义：储蓄记录已经成功写入本机；仅区分新增/编辑和增加/取用，不上传具体金额。
+      trackEvent("savings_record_saved", {
+        record_action: recordId ? "updated" : "created",
+        savings_operation: mode === "take" ? "take" : "add",
+      });
       setSelectedMonth(date.slice(0, 7));
       navigate(recordId ? "/savings" : "/", { replace: true });
     } catch {

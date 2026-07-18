@@ -1,6 +1,7 @@
 import { ArrowRight, Check, Info, Trash } from "@phosphor-icons/react";
 import { useMemo, useState, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { trackEvent } from "../analytics/umami";
 import { useAppData } from "../application/AppDataContext";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { Sheet } from "../components/Sheet";
@@ -45,6 +46,8 @@ export function IncomeFormPage() {
     try {
       setSubmitting(true);
       await saveIncome({ amountCents, occurredOn: date, note }, recordId);
+      // 埋点含义：收入记录已经成功写入本机；只区分新增或编辑，不上传金额、日期和备注。
+      trackEvent("income_record_saved", { record_action: recordId ? "updated" : "created" });
       setSelectedMonth(date.slice(0, 7));
       if (recordId) navigate("/income", { replace: true });
       else if (data!.settings.targetSavingsRate > 0) setSavedCents(amountCents);

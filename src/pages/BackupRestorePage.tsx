@@ -2,6 +2,7 @@ import { ArrowRight, File, ShieldCheck, UploadSimple, Warning } from "@phosphor-
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { ZodError } from "zod";
+import { trackEvent } from "../analytics/umami";
 import { useAppData } from "../application/AppDataContext";
 import { decryptBackup } from "../application/backupService";
 import { ScreenHeader } from "../components/ScreenHeader";
@@ -46,6 +47,8 @@ export function BackupRestorePage() {
     try {
       setWorking(true);
       await restore(pending);
+      // 埋点含义：用户确认并成功恢复了备份；不上传文件、密码、记录数量或任何财务数据。
+      trackEvent("backup_restored");
       navigate("/", { replace: true });
     } catch {
       setPending(null);

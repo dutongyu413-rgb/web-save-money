@@ -37,11 +37,11 @@ export function SettingsPage() {
         <div className="settings-list">
           <SettingsRow icon={<DownloadSimple />} title="导出加密备份" subtitle="生成 .backup 文件" onClick={() => navigate("/settings/export")} />
           <SettingsRow icon={<UploadSimple />} title="从备份恢复" subtitle="将覆盖本机现有数据" onClick={() => navigate("/settings/restore")} />
-          <SettingsRow icon={<ShieldCheck />} title="数据存储说明" subtitle="所有数据仅保存在当前浏览器" onClick={() => navigate("/settings/local")} />
+          <SettingsRow icon={<ShieldCheck />} title="数据存储说明" subtitle="本机存储与匿名统计范围" onClick={() => navigate("/settings/local")} />
           <SettingsRow icon={<Info />} title="关于反向记账" subtitle="版本 0.1.0" onClick={() => setSheet("about")} />
         </div>
         <button className="clear-data-link" type="button" onClick={() => { setConfirmation(""); setError(""); setSheet("clear"); }}>清空全部数据</button>
-        <p className="privacy-copy">无需业务服务器。清除浏览器数据、卸载浏览器或更换设备可能导致数据丢失，请定期导出加密备份。</p>
+        <p className="privacy-copy">无需业务服务器。财务数据仅存本机；Umami 只记录匿名访问和关键功能是否使用，不上传金额、备注或密码。</p>
       </div>
       <Sheet open={sheet === "clear"} onClose={() => setSheet(null)}>
         <div className="sheet-copy clear-sheet">
