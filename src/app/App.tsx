@@ -7,7 +7,6 @@ import { BackupRestorePage } from "../pages/BackupRestorePage";
 import { HomePage } from "../pages/HomePage";
 import { IncomeFormPage } from "../pages/IncomeFormPage";
 import { IncomeListPage } from "../pages/IncomeListPage";
-import { LocalInfoPage } from "../pages/LocalInfoPage";
 import { SavingsFormPage } from "../pages/SavingsFormPage";
 import { SavingsListPage } from "../pages/SavingsListPage";
 import { SettingsPage } from "../pages/SettingsPage";
@@ -31,7 +30,6 @@ export function App() {
         <Route path="/savings/:recordId" element={<SavingsFormPage />} />
         <Route path="/trends" element={<TrendsPage />} />
         <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/settings/local" element={<LocalInfoPage />} />
         <Route path="/settings/export" element={<BackupExportPage />} />
         <Route path="/settings/restore" element={<BackupRestorePage />} />
         <Route path="*" element={<Navigate to="/" replace />} />

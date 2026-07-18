@@ -1,5 +1,5 @@
-import { ArrowRight, File, ShieldCheck, UploadSimple, Warning } from "@phosphor-icons/react";
-import { useState, type FormEvent } from "react";
+import { ArrowRight, File, UploadSimple, Warning } from "@phosphor-icons/react";
+import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { ZodError } from "zod";
 import { trackEvent } from "../analytics/umami";
@@ -9,6 +9,15 @@ import { ScreenHeader } from "../components/ScreenHeader";
 import { Sheet } from "../components/Sheet";
 import type { AppSnapshot } from "../domain/models";
 
+function isBackupFile(file: File) {
+  return file.name.toLowerCase().endsWith(".backup");
+}
+
+function fileSizeLabel(size: number) {
+  if (size >= 1024 * 1024) return `${(size / 1024 / 1024).toFixed(1)} MB`;
+  return `${Math.max(1, Math.round(size / 1024))} KB`;
+}
+
 export function BackupRestorePage() {
   const navigate = useNavigate();
   const { data, restore } = useAppData();
@@ -17,13 +26,38 @@ export function BackupRestorePage() {
   const [error, setError] = useState("");
   const [working, setWorking] = useState(false);
   const [pending, setPending] = useState<AppSnapshot | null>(null);
+  const fileInput = useRef<HTMLInputElement>(null);
   const currentCount = data!.incomes.length + data!.savings.length;
   const pendingCount = pending ? pending.incomes.length + pending.savings.length : 0;
+
+  function chooseFile(event: ChangeEvent<HTMLInputElement>) {
+    const nextFile = event.target.files?.[0] ?? null;
+    if (nextFile && !isBackupFile(nextFile)) {
+      event.target.value = "";
+      setFile(null);
+      setError("请选择后缀为 .backup 的备份文件");
+      return;
+    }
+    if (nextFile && nextFile.size > 10 * 1024 * 1024) {
+      event.target.value = "";
+      setFile(null);
+      setError("备份文件超过 10 MB，无法读取");
+      return;
+    }
+    setFile(nextFile);
+    setError("");
+  }
+
+  function removeFile() {
+    setFile(null);
+    setError("");
+    if (fileInput.current) fileInput.current.value = "";
+  }
 
   async function verify(event: FormEvent) {
     event.preventDefault();
     if (!file) return setError("请选择 .backup 备份文件");
-    if (!file.name.endsWith(".backup")) return setError("请选择后缀为 .backup 的备份文件");
+    if (!isBackupFile(file)) return setError("请选择后缀为 .backup 的备份文件");
     if (file.size > 10 * 1024 * 1024) return setError("备份文件过大，无法读取");
     if (password.length < 8) return setError("请输入导出备份时设置的密码");
     try {
@@ -62,16 +96,14 @@ export function BackupRestorePage() {
     <section className="screen form-screen">
       <ScreenHeader title="从备份恢复" backTo="/settings" />
       <form className="screen-scroll form-content" onSubmit={verify}>
-        <div className="file-drop">
-          <UploadSimple />
-          <label htmlFor="restore-file">选择 .backup 文件</label>
-          <input id="restore-file" type="file" accept=".backup,application/json" onChange={event => setFile(event.target.files?.[0] ?? null)} />
-          {file && <span><File />{file.name}</span>}
+        <div className="backup-file-field">
+          <label htmlFor="restore-file"><UploadSimple />选择备份文件</label>
+          <input ref={fileInput} id="restore-file" className="backup-file-input" type="file" accept=".backup" onChange={chooseFile} />
         </div>
+        {file && <div className="backup-file-summary"><span><File /><span><strong>{file.name}</strong><small>{fileSizeLabel(file.size)} · 已选择加密备份</small></span></span><button type="button" onClick={removeFile}>移除</button></div>}
         <div className="field"><label htmlFor="restore-password">输入备份密码</label><input id="restore-password" type="password" value={password} onChange={event => setPassword(event.target.value)} autoComplete="current-password" /></div>
-        <p className="helper-note"><ShieldCheck />密码仅在本机用于解密，不会上传或保存。</p>
         {error && <p className="form-error" role="alert"><Warning />{error}</p>}
-        <button className="button primary full" disabled={working}>{working ? "正在验证备份" : "验证并恢复"}</button>
+        <button className="button primary full" disabled={working || !file}>{working ? "正在验证备份" : "验证并恢复"}</button>
       </form>
 
       <Sheet open={pending !== null} onClose={() => setPending(null)}>

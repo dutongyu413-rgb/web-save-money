@@ -1,4 +1,4 @@
-import { Check, DownloadSimple, Lock, ShieldCheck } from "@phosphor-icons/react";
+import { Check, DownloadSimple } from "@phosphor-icons/react";
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { trackEvent } from "../analytics/umami";
@@ -15,7 +15,6 @@ export function BackupExportPage() {
   const [error, setError] = useState("");
   const [working, setWorking] = useState(false);
   const [result, setResult] = useState<{ envelope: unknown; filename: string } | null>(null);
-  const count = data!.incomes.length + data!.savings.length;
   const filename = backupFilename();
 
   function saveBackupToLocal() {
@@ -45,11 +44,9 @@ export function BackupExportPage() {
     <section className="screen form-screen">
       <ScreenHeader title="导出备份" backTo="/settings" />
       <form className="screen-scroll form-content" onSubmit={submit}>
-        <div className="helper-note blue"><Lock /> <span><strong>备份会在本机加密</strong><br />文件不会上传到服务器</span></div>
         <div className="field"><label htmlFor="backup-password">设置备份密码</label><input id="backup-password" type="password" value={password} onChange={event => setPassword(event.target.value)} autoComplete="new-password" placeholder="至少 8 位" /></div>
         <div className="field"><label htmlFor="backup-confirm">确认密码</label><input id="backup-confirm" type="password" value={confirm} onChange={event => setConfirm(event.target.value)} autoComplete="new-password" placeholder="再次输入密码" /></div>
         <p className="field-hint">至少 8 位，请妥善保存；忘记后无法恢复。</p>
-        <div className="file-preview"><DownloadSimple /><span><strong>{filename}</strong><small>包含 {count} 笔记录</small></span></div>
         {error && <p className="form-error" role="alert">{error}</p>}
         <button className="button primary full" disabled={working}>{working ? "正在生成备份" : "生成加密备份"}</button>
       </form>
@@ -61,7 +58,6 @@ export function BackupExportPage() {
           <p>{result?.filename}</p>
           <button className="button primary full" type="button" onClick={saveBackupToLocal}><DownloadSimple />保存到本地</button>
           <button className="button ghost full" type="button" onClick={() => navigate("/settings", { replace: true })}>完成</button>
-          <small><ShieldCheck /> 密码和文件都不会由本产品保存</small>
         </div>
       </Sheet>
     </section>

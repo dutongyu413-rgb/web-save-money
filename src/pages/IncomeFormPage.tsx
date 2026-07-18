@@ -97,7 +97,6 @@ export function IncomeFormPage() {
         <div className="form-footer">
           <button className="button primary full" disabled={submitting}>{submitting ? "正在保存" : "保存收入"}</button>
           {recordId && <button className="delete-text" type="button" onClick={() => setDeleteOpen(true)}><Trash />删除这笔收入</button>}
-          <p className="local-caption"><Info />数据仅保存在本机</p>
         </div>
       </form>
 
@@ -118,7 +117,6 @@ export function IncomeFormPage() {
             </>
           ) : <p>本月储蓄目标已达成。</p>}
           <button className="button ghost full" type="button" onClick={() => navigate("/", { replace: true })}>稍后再说</button>
-          <small>记录不会自动转账</small>
         </div>
       </Sheet>
 

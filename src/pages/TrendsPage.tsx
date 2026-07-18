@@ -7,8 +7,8 @@ import { calculateYear } from "../domain/calculations";
 import { formatAxisMoney, formatMoney, formatRate } from "../domain/money";
 
 const chartWidth = 340;
-const chartHeight = 208;
-const plot = { left: 50, right: 8, top: 14, bottom: 34 };
+const chartHeight = 190;
+const plot = { left: 50, right: 8, top: 10, bottom: 30 };
 const plotWidth = chartWidth - plot.left - plot.right;
 const plotHeight = chartHeight - plot.top - plot.bottom;
 
@@ -83,7 +83,7 @@ function IncomeSavingsChart({ months, onSelect }: { months: MonthStats; onSelect
   const range = niceMoneyRange(values);
   const y = (value: number) => plot.top + (range.max - value) / (range.max - range.min) * plotHeight;
   const zeroY = y(0);
-  const ticks = Array.from({ length: 5 }, (_, index) => range.min + (range.max - range.min) * index / 4).reverse();
+  const ticks = Array.from({ length: 4 }, (_, index) => range.min + (range.max - range.min) * index / 3).reverse();
   const groupWidth = plotWidth / 12;
   const barWidth = Math.max(4, groupWidth * 0.25);
 
@@ -124,7 +124,7 @@ function RateChart({ months, targetRate, onSelect }: { months: MonthStats; targe
   const rangeMax = Math.ceil(max / 20) * 20 || 100;
   const y = (value: number) => plot.top + (rangeMax - value) / (rangeMax - rangeMin) * plotHeight;
   const x = (index: number) => plot.left + plotWidth * index / 11;
-  const ticks = Array.from({ length: 5 }, (_, index) => rangeMin + (rangeMax - rangeMin) * index / 4).reverse();
+  const ticks = Array.from({ length: 4 }, (_, index) => rangeMin + (rangeMax - rangeMin) * index / 3).reverse();
   const segments: Array<Array<{ x: number; y: number; index: number }>> = [];
   rates.forEach((rate, index) => {
     if (rate === null) return;
@@ -153,7 +153,6 @@ function RateChart({ months, targetRate, onSelect }: { months: MonthStats; targe
           </g>
         ))}
       </svg>
-      <p className="chart-caption">收入为 0 的月份不显示储蓄率数据点。</p>
     </section>
   );
 }

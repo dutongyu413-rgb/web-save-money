@@ -14,7 +14,6 @@ function pageName(pathname: string) {
   if (pathname.startsWith("/savings/")) return "savings_edit";
   if (pathname === "/trends") return "trends";
   if (pathname === "/settings") return "settings";
-  if (pathname === "/settings/local") return "local_data_info";
   if (pathname === "/settings/export") return "backup_export";
   if (pathname === "/settings/restore") return "backup_restore";
   return "unknown";
@@ -33,4 +32,3 @@ export function AnalyticsPageTracker() {
 
   return null;
 }
-

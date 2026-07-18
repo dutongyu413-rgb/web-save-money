@@ -4,17 +4,22 @@ import { useNavigate } from "react-router-dom";
 import { trackEvent } from "../analytics/umami";
 import { useAppData } from "../application/AppDataContext";
 import { MonthSwitcher } from "../components/MonthSwitcher";
+import { PercentageWheel } from "../components/PercentageWheel";
 import { Sheet } from "../components/Sheet";
 import { calculateStats } from "../domain/calculations";
 import { formatMoney, formatRate } from "../domain/money";
 
 type SheetName = "target" | null;
 
+function rateForWheel(value: number) {
+  return Math.max(1, Math.min(100, Math.round(value)));
+}
+
 export function HomePage() {
   const navigate = useNavigate();
   const { data, selectedMonth, setSelectedMonth, setTargetRate } = useAppData();
   const [sheet, setSheet] = useState<SheetName>(null);
-  const [target, setTarget] = useState(String(data!.settings.targetSavingsRate));
+  const [target, setTarget] = useState(rateForWheel(data!.settings.targetSavingsRate));
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const stats = useMemo(
@@ -34,9 +39,9 @@ export function HomePage() {
 
   async function saveTarget(event: React.FormEvent) {
     event.preventDefault();
-    const value = Number(target);
-    if (!Number.isFinite(value) || value < 0 || value > 100) {
-      setError("请输入 0% 到 100% 之间的目标");
+    const value = target;
+    if (!Number.isInteger(value) || value < 1 || value > 100) {
+      setError("请选择 1% 到 100% 之间的目标");
       return;
     }
     try {
@@ -79,7 +84,7 @@ export function HomePage() {
                 <button
                   className="target-edit"
                   type="button"
-                  onClick={() => { setTarget(String(data!.settings.targetSavingsRate)); setSheet("target"); }}
+                  onClick={() => { setTarget(rateForWheel(data!.settings.targetSavingsRate)); setSheet("target"); }}
                   aria-label={`修改目标储蓄率，当前目标 ${data!.settings.targetSavingsRate}%`}
                 >
                   目标 {data!.settings.targetSavingsRate}%
@@ -124,12 +129,7 @@ export function HomePage() {
       <Sheet open={sheet === "target"} onClose={() => setSheet(null)}>
         <form onSubmit={saveTarget} className="sheet-form">
           <h2>目标储蓄率</h2>
-          <p>设置一个容易坚持的固定目标，可以随时修改。</p>
-          <label htmlFor="target-rate">目标比例</label>
-          <div className="percent-input">
-            <input id="target-rate" value={target} onChange={event => setTarget(event.target.value)} inputMode="decimal" autoFocus />
-            <span>%</span>
-          </div>
+          <PercentageWheel value={target} onChange={setTarget} />
           {error && <p className="field-error" role="alert">{error}</p>}
           <button className="button primary full" disabled={saving}>{saving ? "正在保存" : "保存目标"}</button>
         </form>

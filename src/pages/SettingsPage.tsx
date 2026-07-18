@@ -1,4 +1,4 @@
-import { CaretRight, DownloadSimple, Info, ShieldCheck, Trash, UploadSimple } from "@phosphor-icons/react";
+import { CaretRight, DownloadSimple, Info, Trash, UploadSimple } from "@phosphor-icons/react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppData } from "../application/AppDataContext";
@@ -33,15 +33,14 @@ export function SettingsPage() {
     <section className="screen settings-screen">
       <ScreenHeader title="设置" backTo="/" />
       <div className="screen-scroll">
-        <h2 className="settings-group-title">数据与隐私</h2>
+        <p className="settings-storage-note"><Info />数据保存在当前浏览器中，建议定期导出加密备份。</p>
+        <h2 className="settings-group-title">数据管理</h2>
         <div className="settings-list">
           <SettingsRow icon={<DownloadSimple />} title="导出加密备份" subtitle="生成 .backup 文件" onClick={() => navigate("/settings/export")} />
           <SettingsRow icon={<UploadSimple />} title="从备份恢复" subtitle="将覆盖本机现有数据" onClick={() => navigate("/settings/restore")} />
-          <SettingsRow icon={<ShieldCheck />} title="数据存储说明" subtitle="本机存储与匿名统计范围" onClick={() => navigate("/settings/local")} />
           <SettingsRow icon={<Info />} title="关于反向记账" subtitle="版本 0.1.0" onClick={() => setSheet("about")} />
         </div>
         <button className="clear-data-link" type="button" onClick={() => { setConfirmation(""); setError(""); setSheet("clear"); }}>清空全部数据</button>
-        <p className="privacy-copy">无需业务服务器。财务数据仅存本机；Umami 只记录匿名访问和关键功能是否使用，不上传金额、备注或密码。</p>
       </div>
       <Sheet open={sheet === "clear"} onClose={() => setSheet(null)}>
         <div className="sheet-copy clear-sheet">
@@ -63,7 +62,7 @@ export function SettingsPage() {
         <div className="sheet-copy">
           <span className="sheet-symbol blue"><Info /></span>
           <h2>反向记账</h2>
-          <p>只记录收入和存下的钱，用减法了解整体支出，帮助你把注意力放在真正留下了多少。</p>
+          <p>只记录收入和储蓄，帮助你把注意力放在真正留下了多少。</p>
           <small>版本 0.1.0</small>
           <button className="button primary full" type="button" onClick={() => setSheet(null)}>知道了</button>
         </div>

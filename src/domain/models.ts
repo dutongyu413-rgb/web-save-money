@@ -1,5 +1,5 @@
 export const SCHEMA_VERSION = 1;
-export const DEFAULT_TARGET_RATE = 30;
+export const DEFAULT_TARGET_RATE = 20;
 
 export interface AppSettings {
   id: "app";

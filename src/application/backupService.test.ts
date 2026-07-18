@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { decryptBackup, encryptSnapshot } from "./backupService";
+import { backupFilename, decryptBackup, encryptSnapshot } from "./backupService";
 import { createDefaultSettings, type AppSnapshot } from "../domain/models";
 
 const snapshot: AppSnapshot = {
@@ -19,5 +19,9 @@ describe("backup encryption", () => {
   it("does not decrypt with a wrong password", async () => {
     const envelope = await encryptSnapshot(snapshot, "password-123");
     await expect(decryptBackup(envelope, "wrong-password")).rejects.toBeDefined();
+  });
+
+  it("uses the selectable .backup file extension", () => {
+    expect(backupFilename(new Date("2026-07-18T08:00:00+08:00"))).toBe("反向记账-2026-07-18.backup");
   });
 });

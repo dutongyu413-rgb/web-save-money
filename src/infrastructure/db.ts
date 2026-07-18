@@ -83,7 +83,7 @@ async function migrateLegacyIfNeeded() {
         updatedAt: now,
       }));
     const settings = createDefaultSettings(now);
-    settings.targetSavingsRate = Math.max(0, Math.min(100, Number(legacy.settings?.targetRate ?? 30)));
+    settings.targetSavingsRate = Math.max(1, Math.min(100, Number(legacy.settings?.targetRate ?? 20)));
 
     await db.transaction("rw", db.settings, db.incomes, db.savings, async () => {
       await db.settings.put(settings);
