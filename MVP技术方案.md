@@ -352,7 +352,15 @@ production   正式地址
 
 ### 12.2 静态发布
 
-构建产物仅包含静态资源，可部署到对象存储、CDN 或静态网站托管服务。
+MVP 使用 GitHub Pages 发布，正式地址为：
+
+```text
+https://dutongyu413-rgb.github.io/web-save-money/
+```
+
+推送到 `main` 分支后，GitHub Actions 自动运行测试并执行 `npm run build:pages`，只把生成的 `dist/` 发布到 Pages。`dist/` 不提交到 Git 仓库。Pages 构建使用 `/web-save-money/` 资源基础路径，本地开发仍使用 `/`，避免影响本地预览地址。
+
+构建产物仅包含静态资源，后续也可迁移到对象存储、CDN 或其他静态网站托管服务。
 
 上线要求：
 

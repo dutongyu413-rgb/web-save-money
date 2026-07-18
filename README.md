@@ -28,6 +28,7 @@ http://127.0.0.1:8417/
 npm run dev      # 本地开发
 npm run test     # 单元测试
 npm run build    # 类型检查和生产构建
+npm run build:pages # 构建 GitHub Pages 版本
 npm run preview  # 预览生产构建
 ```
 
@@ -73,6 +74,18 @@ VITE_UMAMI_SCRIPT_URL=https://cloud.umami.is/script.js
 | `save_money_backup_restored` | 备份恢复成功 |
 
 统计只包含页面名称、创建/编辑、增加/取用等非敏感分类，不上传金额、日期、备注、目标值、密码和备份内容。未配置 Umami 或统计脚本加载失败时，不影响应用正常使用。
+
+## GitHub Pages 发布
+
+正式地址：
+
+```text
+https://dutongyu413-rgb.github.io/web-save-money/
+```
+
+推送到 `main` 分支后，`.github/workflows/pages.yml` 会自动执行测试，构建 `dist/`，再发布到 GitHub Pages。`dist/` 是自动生成的临时目录，不需要提交到仓库。
+
+第一次发布前，需要在 GitHub 仓库的 `Settings → Pages` 中，将 `Source` 设为 `GitHub Actions`。本地预览继续使用根路径；Pages 构建会自动使用 `/web-save-money/` 子路径。
 
 ## 技术栈
 
