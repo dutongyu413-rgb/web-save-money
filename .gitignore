@@ -14,7 +14,10 @@ coverage/
 # User financial backup files
 *.backup
 
-# Internal implementation reference
+# Internal product and implementation documents (kept locally, not published)
+MVP产品需求文档.md
+MVP技术方案.md
+UI视觉规范.md
 使用Umami追踪网页访问与用户行为指南.md
 GitHub-Pages长期链接发布指南.md
 

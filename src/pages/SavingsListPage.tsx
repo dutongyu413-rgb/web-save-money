@@ -24,7 +24,7 @@ export function SavingsListPage() {
   return (
     <section className="screen list-screen">
       <ScreenHeader title="储蓄记录" backTo="/" />
-      <div className="screen-scroll with-standalone-action">
+      <div className="screen-scroll with-standalone-action savings-list-scroll">
         <section className="summary-panel savings-summary">
           <span>累计净储蓄</span>
           <strong className="orange-text">{formatMoney(total)}</strong>
@@ -52,13 +52,14 @@ export function SavingsListPage() {
             ))}
           </div>
         ) : (
-          <div className="record-list"><EmptyState title="还没有储蓄记录" body="可以增加储蓄，也可以记录取用过去的储蓄。" /></div>
+          <div className="record-list"><EmptyState title="还没有储蓄记录" body="记下第一笔存下的钱，开始关注净储蓄。" /></div>
         )}
       </div>
-      <div className="sticky-action">
+      <div className="sticky-action savings-sticky-action">
         <button className="button savings-primary full" type="button" onClick={() => navigate("/savings/new")}>
-          <Plus weight="bold" />记录储蓄变化
+          <Plus weight="bold" />增加储蓄
         </button>
+        <button className="take-savings-link" type="button" onClick={() => navigate("/savings/new?mode=take")}>需要取用储蓄？记录一笔</button>
       </div>
     </section>
   );

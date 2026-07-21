@@ -44,6 +44,8 @@ export function IncomeFormPage() {
     if (Object.keys(nextErrors).length || !amountCents) return;
 
     try {
+      // 移动端提交后先释放输入框焦点，避免软键盘继续占用空间并压缩后续弹窗。
+      if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
       setSubmitting(true);
       await saveIncome({ amountCents, occurredOn: date, note }, recordId);
       // 埋点含义：收入记录已经成功写入本机；只区分新增或编辑，不上传金额、日期和备注。
