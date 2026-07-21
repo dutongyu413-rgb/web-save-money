@@ -39,8 +39,12 @@ export function Sheet({ open, onClose, children, dismissible = true, className =
 
     const visualViewport = window.visualViewport;
     const updateViewport = () => {
-      // 弹层只能使用手机画布内部的高度，避免电脑浏览器视口更高时把底部按钮裁掉。
-      const containerHeight = backdropRef.current?.parentElement?.clientHeight || window.innerHeight;
+      // 直接以最外层手机画布为准。部分 Chrome 版本会把百分比高度按浏览器视口
+      // 计算，如果只读取当前页面高度，弹层底部可能超出手机画布并被裁掉。
+      const appShell = backdropRef.current?.closest<HTMLElement>(".app-shell");
+      const containerHeight = appShell?.clientHeight
+        || backdropRef.current?.parentElement?.clientHeight
+        || window.innerHeight;
       setViewport(fitSheetViewport(
         visualViewport?.height ?? window.innerHeight,
         visualViewport?.offsetTop ?? 0,
