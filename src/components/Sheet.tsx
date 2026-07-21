@@ -1,4 +1,16 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+
+type SheetViewport = { height: number; offsetTop: number };
+
+export function fitSheetViewport(viewportHeight: number, offsetTop: number, containerHeight: number): SheetViewport {
+  const safeContainerHeight = Math.max(0, containerHeight);
+  const safeOffsetTop = Math.max(0, Math.min(offsetTop, safeContainerHeight));
+
+  return {
+    height: Math.max(0, Math.min(viewportHeight, safeContainerHeight - safeOffsetTop)),
+    offsetTop: safeOffsetTop,
+  };
+}
 
 export function Sheet({ open, onClose, children, dismissible = true, className = "" }: {
   open: boolean;
@@ -7,7 +19,8 @@ export function Sheet({ open, onClose, children, dismissible = true, className =
   dismissible?: boolean;
   className?: string;
 }) {
-  const [viewport, setViewport] = useState<{ height: number; offsetTop: number } | null>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+  const [viewport, setViewport] = useState<SheetViewport | null>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -26,10 +39,13 @@ export function Sheet({ open, onClose, children, dismissible = true, className =
 
     const visualViewport = window.visualViewport;
     const updateViewport = () => {
-      setViewport({
-        height: visualViewport?.height ?? window.innerHeight,
-        offsetTop: visualViewport?.offsetTop ?? 0,
-      });
+      // 弹层只能使用手机画布内部的高度，避免电脑浏览器视口更高时把底部按钮裁掉。
+      const containerHeight = backdropRef.current?.parentElement?.clientHeight || window.innerHeight;
+      setViewport(fitSheetViewport(
+        visualViewport?.height ?? window.innerHeight,
+        visualViewport?.offsetTop ?? 0,
+        containerHeight,
+      ));
     };
 
     updateViewport();
@@ -47,6 +63,7 @@ export function Sheet({ open, onClose, children, dismissible = true, className =
   if (!open) return null;
   return (
     <div
+      ref={backdropRef}
       className="sheet-backdrop"
       onMouseDown={dismissible ? onClose : undefined}
       role="presentation"

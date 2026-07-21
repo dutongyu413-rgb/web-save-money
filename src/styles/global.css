@@ -275,10 +275,11 @@ svg { flex: 0 0 auto; }
 @keyframes sheet-up { from { opacity: 0; transform: translateY(18px); } }
 @keyframes pulse { 50% { opacity: 0.55; } }
 
-@media (min-width: 600px) {
-  body { padding: 22px 0; }
-  .app-shell { height: calc(100dvh - 44px); min-height: calc(100dvh - 44px); border: 1px solid rgba(223, 229, 238, 0.95); border-radius: 28px; box-shadow: 0 28px 80px rgba(31, 47, 74, 0.14); }
-  .screen, .app-state { height: calc(100dvh - 44px); min-height: calc(100dvh - 44px); }
+@media (min-width: 600px), (hover: hover) and (pointer: fine) {
+  body { display: grid; min-height: 100dvh; place-items: center; padding: 22px; }
+  /* 电脑端始终使用 9:16 手机画布；窗口较矮时宽度会同步缩小，避免内容被裁切。 */
+  .app-shell { width: min(480px, calc(56.25dvh - 24.75px), calc(100vw - 44px)); height: auto; min-height: 0; aspect-ratio: 9 / 16; margin: 0; border: 1px solid rgba(223, 229, 238, 0.95); border-radius: 28px; box-shadow: 0 28px 80px rgba(31, 47, 74, 0.14); }
+  .screen, .app-state { height: 100%; min-height: 100%; }
   .sheet-backdrop { border-radius: 28px; overflow: hidden; }
 }
 
