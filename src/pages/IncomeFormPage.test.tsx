@@ -59,7 +59,11 @@ describe("IncomeFormPage mobile success sheet", () => {
 
     await waitFor(() => expect(screen.getByRole("dialog")).toBeInTheDocument());
     expect(amountInput).not.toHaveFocus();
-    expect(screen.getByRole("button", { name: "记下这笔储蓄" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "稍后再说" })).toBeInTheDocument();
+    const dialog = screen.getByRole("dialog");
+    const actionArea = dialog.querySelector<HTMLElement>(".income-success-actions");
+    if (!actionArea) throw new Error("收入保存弹层缺少固定操作区");
+    expect(dialog).toHaveClass("income-success-dialog");
+    expect(actionArea).toContainElement(screen.getByRole("button", { name: "记下这笔储蓄" }));
+    expect(actionArea).toContainElement(screen.getByRole("button", { name: "稍后再说" }));
   });
 });

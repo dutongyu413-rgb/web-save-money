@@ -102,23 +102,29 @@ export function IncomeFormPage() {
         </div>
       </form>
 
-      <Sheet open={savedCents !== null} onClose={() => undefined} dismissible={false}>
-        <div className="sheet-copy">
-          <span className="sheet-symbol success"><Check weight="bold" /></span>
-          <h2>收入已记录 {formatMoney(savedCents ?? 0)}</h2>
-          {suggested?.remaining ? (
-            <>
-              <p>按照 {data!.settings.targetSavingsRate}% 的目标，本月还建议存下 {formatMoney(suggested.remaining)}。</p>
-              <div className="sheet-stats">
-                <div><span>本月目标</span><strong>{formatMoney(suggested.targetCents)}</strong></div>
-                <div><span>当前已储蓄</span><strong>{formatMoney(suggested.savingsCents)}</strong></div>
-              </div>
+      <Sheet open={savedCents !== null} onClose={() => undefined} dismissible={false} className="income-success-dialog">
+        <div className="sheet-copy income-success-sheet">
+          <div className="income-success-scroll">
+            <span className="sheet-symbol success"><Check weight="bold" /></span>
+            <h2>收入已记录 {formatMoney(savedCents ?? 0)}</h2>
+            {suggested?.remaining ? (
+              <>
+                <p>按照 {data!.settings.targetSavingsRate}% 的目标，本月还建议存下 {formatMoney(suggested.remaining)}。</p>
+                <div className="sheet-stats">
+                  <div><span>本月目标</span><strong>{formatMoney(suggested.targetCents)}</strong></div>
+                  <div><span>当前已储蓄</span><strong>{formatMoney(suggested.savingsCents)}</strong></div>
+                </div>
+              </>
+            ) : <p>本月储蓄目标已达成。</p>}
+          </div>
+          <div className="income-success-actions">
+            {suggested?.remaining ? (
               <button className="button savings-primary full" type="button" onClick={() => navigate("/savings/new", { replace: true, state: { prefillCents: suggested.remaining, fromIncome: true } })}>
                 记下这笔储蓄<ArrowRight />
               </button>
-            </>
-          ) : <p>本月储蓄目标已达成。</p>}
-          <button className="button ghost full" type="button" onClick={() => navigate("/", { replace: true })}>稍后再说</button>
+            ) : null}
+            <button className="button ghost full" type="button" onClick={() => navigate("/", { replace: true })}>稍后再说</button>
+          </div>
         </div>
       </Sheet>
 

@@ -235,6 +235,14 @@ svg { flex: 0 0 auto; }
 .sheet-stats div { display: flex; align-items: center; flex-direction: column; gap: 4px; padding: 12px; background: var(--canvas); }
 .sheet-stats span { color: var(--ink-600); font-size: var(--text-meta); }
 .sheet-stats strong { font-size: 13px; }
+.income-success-dialog { display: flex; overflow: hidden; flex-direction: column; }
+.income-success-dialog .sheet-handle { flex: 0 0 auto; }
+.income-success-sheet { min-height: 0; align-items: stretch; flex: 1; }
+.income-success-scroll { display: flex; min-height: 0; align-items: center; flex: 1; flex-direction: column; overflow-y: auto; overscroll-behavior-y: contain; padding: 0 2px 4px; text-align: center; scrollbar-width: none; }
+.income-success-scroll::-webkit-scrollbar { display: none; }
+.income-success-scroll > p { margin: 9px 0 18px; color: var(--ink-600); font-size: 13px; line-height: 1.65; }
+.income-success-actions { position: relative; z-index: 1; width: 100%; flex: 0 0 auto; padding: 12px 0 2px; background: var(--surface); }
+.income-success-actions .button + .button { margin-top: 8px; }
 .rate-wheel-shell { position: relative; height: 220px; margin: 10px 0 18px; overflow: hidden; }
 .rate-wheel-selection { position: absolute; z-index: 0; top: 88px; right: 14px; left: 14px; height: 44px; border: 1px solid rgba(245, 106, 10, 0.14); border-radius: 14px; background: var(--orange-050); pointer-events: none; }
 .rate-wheel { position: relative; z-index: 1; height: 220px; overflow-y: auto; overscroll-behavior-y: contain; scroll-snap-type: y mandatory; scrollbar-width: none; -webkit-mask-image: linear-gradient(to bottom, transparent, black 24%, black 76%, transparent); mask-image: linear-gradient(to bottom, transparent, black 24%, black 76%, transparent); }

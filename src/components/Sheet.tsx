@@ -1,10 +1,11 @@
 import { useEffect, useState, type ReactNode } from "react";
 
-export function Sheet({ open, onClose, children, dismissible = true }: {
+export function Sheet({ open, onClose, children, dismissible = true, className = "" }: {
   open: boolean;
   onClose: () => void;
   children: ReactNode;
   dismissible?: boolean;
+  className?: string;
 }) {
   const [viewport, setViewport] = useState<{ height: number; offsetTop: number } | null>(null);
 
@@ -51,7 +52,7 @@ export function Sheet({ open, onClose, children, dismissible = true }: {
       role="presentation"
       style={viewport ? { top: viewport.offsetTop, bottom: "auto", height: viewport.height } : undefined}
     >
-      <section className="sheet" role="dialog" aria-modal="true" onMouseDown={event => event.stopPropagation()}>
+      <section className={`sheet ${className}`.trim()} role="dialog" aria-modal="true" onMouseDown={event => event.stopPropagation()}>
         <div className="sheet-handle" aria-hidden="true" />
         {children}
       </section>
